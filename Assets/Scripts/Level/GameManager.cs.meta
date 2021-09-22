@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2000dcdad2f0e5f439d8b86f66753698
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _generateLevelTrigger: {fileID: 11400000, guid: 088055ed842e44d49bc0b509716c6b44, type: 2}
+  - _gameEndEvent: {fileID: 11400000, guid: 92a7caaf1e56e1347beb1b2846b5d546, type: 2}
+  - _deathEvent: {fileID: 11400000, guid: 189308f9ccef39845a686754faad4e2e, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
