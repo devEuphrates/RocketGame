@@ -92,7 +92,7 @@ Material:
     - _EnvironmentReflections: 1
     - _FadeOffset: 0
     - _FadeRange: 1
-    - _FadeToggle: 1
+    - _FadeToggle: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1

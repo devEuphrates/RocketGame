@@ -23,7 +23,7 @@ Material:
   m_Name: PolygonCity_Mat_04_B
   m_Shader: {fileID: 4800000, guid: e813659f3d491ec459d6f4f083899513, type: 3}
   m_ShaderKeywords: _METALLICSPECGLOSSMAP _NORMALMAP
-  m_LightmapFlags: 6
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
