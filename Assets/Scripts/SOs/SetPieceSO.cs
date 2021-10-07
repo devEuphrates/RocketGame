@@ -5,4 +5,5 @@ public class SetPieceSO : ScriptableObject
 {
     public int minLevel;
     public GameObject[] variants;
+    public float size;
 }
