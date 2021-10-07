@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: SetPiece 0
   m_EditorClassIdentifier: 
   minLevel: 0
-  prefab: {fileID: 7223423560843631027, guid: cb661038e9bf5fe40a0c7168dba2e29d, type: 3}
-  prefabReverse: {fileID: 7266735348904738348, guid: b0d94e6c6e05e8c42b65d4bc0c174215, type: 3}
+  variants:
+  - {fileID: 677812153419133772, guid: 8c0bc8ef4b22b324297d18c2a2f01407, type: 3}
+  - {fileID: 8166107831182307210, guid: 50788dc094700b74abb361cd751c29f1, type: 3}
+  size: 2
