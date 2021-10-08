@@ -1,18 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
     public static Transform SetPieceParent;
-
     public static bool _secondMode = false;
 
     [Header("Spawn Parameters")]
     [SerializeField] SetPieceSO[] _setPieces;
     [SerializeField] uint _setPieceCount = 10;
-    [SerializeField] float _turnSize = 30f;
-    //[SerializeField] Color[] _meterColors;
-    [SerializeField] float _offset = 90f;
+    [SerializeField] float _offset = 10f;
 
     [Header("Events"), Space]
     [SerializeField] EventChannelSO _generateLevelTrigger;
@@ -21,17 +19,13 @@ public class LevelGenerator : MonoBehaviour
     [Header("References"), Space]
     [SerializeField] Transform _boss;
     [SerializeField] Transform _wall;
-    [SerializeField] GameObject _distancePrefab;
-    [SerializeField] Transform _phaseTwoTrigger;
     [SerializeField] GameObject _floorPrefab;
     [SerializeField] Transform _floorsParent;
     [SerializeField] float _floorStartOffset = 40f;
     [SerializeField] int _extraFloors = 0;
 
 
-    List<SetPieceSpawn> _curLevelSPs = new List<SetPieceSpawn>();
     List<GameObject> _spawnedSetPieces = new List<GameObject>();
-    List<GameObject> _spawnedMilestones = new List<GameObject>();
 
     void Awake()
     {
@@ -39,99 +33,63 @@ public class LevelGenerator : MonoBehaviour
         if (_generateLevelTrigger != null) _generateLevelTrigger.onTrigger += GenerateCurLevel;
     }
 
-    public void GenerateCurLevel()
+    void GenerateEnviromentBase(float lastZ)
     {
-        if (_setPieces != null && _setPieces.Length != 0)
-        {
-            uint level = PlayerInfo.PlayerLevel;
-            _curLevelSPs.Clear();
+        if (_floorPrefab == null || _floorsParent == null) return;
 
-            for (int i = 0; i < _setPieces.Length; i++)
-                if (_setPieces[i].minLevel <= level)
-                    _curLevelSPs.Add(new SetPieceSpawn(_setPieces[i]));
-
-            List<SetPieceSpawn> noSpwn;
-            SetPieceSpawn sel = null;
-            for (int i = 0; i < _setPieceCount; i++)
-            {
-                noSpwn = _curLevelSPs.FindAll(p => p.GetCount() == 0);
-                sel = noSpwn == null || noSpwn.Count == 0 ? _curLevelSPs[Random.Range(0, _curLevelSPs.Count)] : noSpwn[Random.Range(0, noSpwn.Count)];
-
-                _spawnedSetPieces.Add(sel.Spawn(_turnSize));
-
-            }
-        }
-
-        int x = Mathf.CeilToInt((_setPieceCount + 1) * _turnSize + _offset - _floorStartOffset + 5);
+        int x = Mathf.CeilToInt(lastZ + 50f + _floorStartOffset);
         int floorCount = x / 10;
         floorCount = x % 10 == 0 ? floorCount : floorCount + 1;
         floorCount += _extraFloors;
-        if (_floorPrefab != null && _floorsParent != null)
+
             for (int i = 0; i < floorCount; i++)
                 Instantiate(_floorPrefab, new Vector3(0f, 0f, _floorStartOffset + i * 10f), Quaternion.identity, _floorsParent);
-
-        //if (_secondMode)
-        //{
-        //    StartCoroutine(SecMode());
-        //    return;
-        //}
-
-        if (_wall != null) _wall.position = new Vector3(0f, 5f, (_setPieceCount + 1) * _turnSize + _offset);
-        if (_boss != null) _boss.position = new Vector3(0f, 0f, (_setPieceCount + 1) * _turnSize + _offset - 10f);
     }
 
-    //IEnumerator<WaitForEndOfFrame> SecMode()
-    //{
-    //    if (_distancePrefab == null) yield break;
-
-    //    for (int i = 0; i < 1000; i++)
-    //    {
-    //        GameObject go = Instantiate(_distancePrefab, new Vector3(0f, 0f, _setPieceCount * _turnSize + i + _offset), Quaternion.identity, transform);
-    //        MeterStone ms = go.GetComponent<MeterStone>();
-
-    //        ms.Set();
-    //        int index = i % _meterColors.Length;
-    //        ms.SetColor(_meterColors[index]);
-    //        ms.SetMeter(i + 1);
-
-    //        go.name = (i + 1).ToString("#th Meter");
-    //        _spawnedMilestones.Add(go);
-
-    //        if (i % 40 == 0) yield return new WaitForEndOfFrame();
-    //    }
-
-    //    if (_phaseTwoTrigger != null) _phaseTwoTrigger.position = new Vector3(0f, 5f, _setPieceCount * _turnSize + _offset - 1);
-    //}
-
-    void DestroyAll()
+    public void GenerateCurLevel()
     {
-        _spawnedSetPieces.ForEach(p => Destroy(p.gameObject));
-        _spawnedMilestones.ForEach(p => Destroy(p.gameObject));
-    }
+        float lastZ = 0f;
 
-    class SetPieceSpawn
-    {
-        SetPieceSO _sp;
-        uint _spawnCount;
-
-        public SetPieceSpawn(SetPieceSO setPiece)
+        if (_setPieces != null && _setPieces.Length != 0)
         {
-            _sp = setPiece;
-            _spawnCount = 0;
+            List<SetPieceSO> curLevelSPs = new List<SetPieceSO>();
+            uint level = PlayerInfo.PlayerLevel;
+            curLevelSPs.Clear();
+
+            for (int i = 0; i < _setPieces.Length; i++)
+                if (_setPieces[i].minLevel <= level)
+                    curLevelSPs.Add(_setPieces[i]);
+
+            List<SetPieceSO> notSpawned = new List<SetPieceSO>(curLevelSPs);
+
+
+            for (int i = 0; i < _setPieceCount; i++)
+            {
+                SetPieceSO sel;
+
+                if (notSpawned.Count != 0)
+                {
+                    int rndIndex = UnityEngine.Random.Range(0, notSpawned.Count);
+                    sel = notSpawned[rndIndex];
+                    notSpawned.Remove(sel);
+                }
+                else
+                {
+                    int rndIndex = UnityEngine.Random.Range(0, curLevelSPs.Count);
+                    sel = curLevelSPs[rndIndex];
+                }
+
+
+                lastZ += _offset;
+                GameObject go = Instantiate(sel.variants[UnityEngine.Random.Range(0, sel.variants.Length)], new Vector3(0f, 0.1f, lastZ + sel.size * 0.5f + _floorStartOffset), Quaternion.identity, transform);
+                _spawnedSetPieces.Add(go);
+                lastZ += sel.size;
+            }
         }
 
-        public uint GetCount() => _spawnCount;
+        if (_wall != null) _wall.position = new Vector3(0f, 5f, lastZ + _offset + 40f + _floorStartOffset);
+        if (_boss != null) _boss.position = new Vector3(0f, 0f, lastZ + _offset + 30f + _floorStartOffset);
 
-        public SetPieceSO GetSetPiece() => _sp;
-
-        public GameObject Spawn(float lastPos)
-        {
-            if (_sp == null) return null;
-
-            GameObject selVariant = _sp.variants[Random.Range(0, _sp.variants.Length)];
-
-            _spawnCount++;
-            return Instantiate(selVariant, new Vector3(0f, 0f, 0f), Quaternion.identity, LevelGenerator.SetPieceParent);
-        }
+        GenerateEnviromentBase(lastZ);
     }
 }

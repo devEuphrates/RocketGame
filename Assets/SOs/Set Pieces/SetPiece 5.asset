@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bdf9784f7c2914ea1fd7d52be17c12, type: 3}
   m_Name: SetPiece 5
   m_EditorClassIdentifier: 
+  id: 5
   minLevel: 0
-  prefab: {fileID: 3197676534844051801, guid: ffcbdf1820ce8564ba9ab04aaa3c79aa, type: 3}
-  prefabReverse: {fileID: 3023974676173286059, guid: 74d3e1dc51a37eb4a9d52873a0f70b49, type: 3}
+  variants: []
+  size: 0

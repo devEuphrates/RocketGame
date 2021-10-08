@@ -80,6 +80,12 @@ public class PlayerControls : MonoBehaviour
 
     void Update()
     {
+        if (_currentState == RocketState.Landed && _launching)
+        {
+            float step = 90f / _launchSeconds * Time.deltaTime;
+            transform.eulerAngles += new Vector3(step, 0f, 0f);
+        }
+
 #if PC_CONTROLS
         if (Input.GetKeyDown(KeyCode.Space) && _currentState == RocketState.Landed)
             Launch();
@@ -145,12 +151,12 @@ public class PlayerControls : MonoBehaviour
         {
             case RocketState.Landed:
                 if (!_launching) return;
-                _rigidbody.velocity = new Vector3(0f, _ms, _speed);
 
                 if (transform.position.y >= _startHeight)
                 {
                     _rigidbody.velocity = new Vector3(0f, 0f, _speed);
                     transform.position = new Vector3(0f, _startHeight, transform.position.z);
+                    transform.eulerAngles = new Vector3(90f, 0f, 0f);
                     _target.position = new Vector3(0f, _startHeight, transform.position.z + _targetOffset);
                     _launching = false;
                     _currentState = RocketState.Flying;
@@ -158,7 +164,7 @@ public class PlayerControls : MonoBehaviour
                 return;
 
             case RocketState.Flying:
-                _moveVector /= 200f;
+                _moveVector /= 150f;
 
                 float moveX = _moveVector.x;
                 float moveY = _moveVector.y;
@@ -225,8 +231,6 @@ public class PlayerControls : MonoBehaviour
     {
         _flyEffects.SetActive(false);
 
-        _ms = (_startHeight - transform.position.y) / _launchSeconds;
-
         if (_phaseTwoEvent != null) _phaseTwoEvent.onTrigger += () => {
             _currentState = RocketState.PhaseTwo;
             _rigidbody.velocity = new Vector3(0f, 0f, _speed * _phaseTwoMultiplier);
@@ -255,12 +259,14 @@ public class PlayerControls : MonoBehaviour
     void Launch()
     {
         if (_launching) return;
+        _ms = (_startHeight - transform.position.y) / _launchSeconds;
+
         _launching = true;
 
         _flightStartEvent.Invoke();
         _flyEffects.SetActive(true);
 
-        _animator.SetTrigger("Launch");
+        _rigidbody.velocity = new Vector3(0f, _ms, _speed);
     }
 
     void Die()

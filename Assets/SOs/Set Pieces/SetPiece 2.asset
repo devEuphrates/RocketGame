@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bdf9784f7c2914ea1fd7d52be17c12, type: 3}
   m_Name: SetPiece 2
   m_EditorClassIdentifier: 
+  id: 2
   minLevel: 0
   variants:
   - {fileID: 6364754448448184980, guid: 494b5dd02171f784788511b453f25ff3, type: 3}
   - {fileID: 875376059919434585, guid: abd43da265379ef48ae55ee35e812b0f, type: 3}
-  size: 0
+  size: 18
