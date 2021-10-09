@@ -14,5 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 6
   minLevel: 0
-  variants: []
-  size: 0
+  variants:
+  - {fileID: 8505989586582355589, guid: 21d20caeb388dc2449e4ad131525d995, type: 3}
+  - {fileID: 1803441818752624433, guid: ee1010f6e45d2f04cb0f30caca0612f3, type: 3}
+  - {fileID: 3222126175117688552, guid: 4a6fcc738f0b6e44e9b6810f232339be, type: 3}
+  - {fileID: 537018222068785257, guid: 900cab65a23456c429771be87412c469, type: 3}
+  size: 58

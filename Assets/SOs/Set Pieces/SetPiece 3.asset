@@ -15,5 +15,7 @@ MonoBehaviour:
   id: 3
   minLevel: 0
   variants:
-  - {fileID: 4991559244623270594, guid: 153ee398fe828f241bc6cf1cd6fd7c1b, type: 3}
+  - {fileID: 1872870251737683810, guid: 0d7a1cf6a4323ea43b4f572ab32eb150, type: 3}
+  - {fileID: 6206221159887805894, guid: a8e7e46bea5fd564a9917b7e32fe11bc, type: 3}
+  - {fileID: 7755823241945965604, guid: d55672b1aa4a72648abda7c512c3b0b9, type: 3}
   size: 40

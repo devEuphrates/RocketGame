@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5bdf9784f7c2914ea1fd7d52be17c12, type: 3}
   m_Name: SetPiece 7
   m_EditorClassIdentifier: 
-  id: 0
+  id: 7
   minLevel: 0
-  variants: []
-  size: 0
+  variants:
+  - {fileID: 8742715532363346026, guid: 232a8a40628ea2f439680f6cd2a23bee, type: 3}
+  - {fileID: 7143354820579549759, guid: 195749fa6dd3c014b9fa3516f091f3a3, type: 3}
+  - {fileID: 514169799289582573, guid: d2c5144525fbc344389e2023ee0caa66, type: 3}
+  - {fileID: 5751649210686218563, guid: 0fc73e949572f8e4c8b6fc0bf2f85c4f, type: 3}
+  size: 40
